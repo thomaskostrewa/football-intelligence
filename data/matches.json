@@ -1,0 +1,162 @@
+[
+  {
+    "id": "ger-mex",
+    "round": { "de": "Achtelfinale", "en": "Round of 32", "pt": "Oitavas de Final" },
+    "date": "2026-07-01T19:00:00Z",
+    "venue": { "de": "Seattle, USA", "en": "Seattle, USA", "pt": "Seattle, EUA" },
+    "homeTeam": "ger",
+    "awayTeam": "mex",
+    "weather": { "icon": "🌧", "temp": 18, "desc": { "de": "Leichter Regen · Wind 12 km/h", "en": "Light rain · Wind 12 km/h", "pt": "Chuva fraca · Vento 12 km/h" } },
+    "importance": { "de": "KO-Spiel – Ein Spiel, alles entscheidet.", "en": "Knockout – One game decides it all.", "pt": "Eliminatória – Um jogo decide tudo." }
+  },
+  {
+    "id": "esp-bra",
+    "round": { "de": "Achtelfinale", "en": "Round of 32", "pt": "Oitavas de Final" },
+    "date": "2026-07-02T22:00:00Z",
+    "venue": { "de": "Miami, USA", "en": "Miami, USA", "pt": "Miami, EUA" },
+    "homeTeam": "esp",
+    "awayTeam": "bra",
+    "weather": { "icon": "☀️", "temp": 29, "desc": { "de": "Sonnig · Schwüle Luft", "en": "Sunny · Humid", "pt": "Ensolarado · Muito húmido" } },
+    "importance": { "de": "KO-Spiel – Ein Spiel, alles entscheidet.", "en": "Knockout – One game decides it all.", "pt": "Eliminatória – Um jogo decide tudo." }
+  },
+  {
+    "id": "eng-cod",
+    "round": { "de": "Achtelfinale", "en": "Round of 32", "pt": "Oitavas de Final" },
+    "date": "2026-07-02T19:00:00Z",
+    "venue": { "de": "New York, USA", "en": "New York, USA", "pt": "Nova Iorque, EUA" },
+    "homeTeam": "eng",
+    "awayTeam": "cod",
+    "weather": { "icon": "⛅", "temp": 22, "desc": { "de": "Wechselhaft · Wind 18 km/h", "en": "Partly cloudy · Wind 18 km/h", "pt": "Parcialmente nublado · Vento 18 km/h" } },
+    "importance": { "de": "KO-Spiel – Ein Spiel, alles entscheidet.", "en": "Knockout – One game decides it all.", "pt": "Eliminatória – Um jogo decide tudo." }
+  },
+  {
+    "id": "arg-cro",
+    "round": { "de": "Achtelfinale", "en": "Round of 32", "pt": "Oitavas de Final" },
+    "date": "2026-07-03T19:00:00Z",
+    "venue": { "de": "Dallas, USA", "en": "Dallas, USA", "pt": "Dallas, EUA" },
+    "homeTeam": "arg",
+    "awayTeam": "cro",
+    "weather": { "icon": "☀️", "temp": 32, "desc": { "de": "Heiß und trocken · Wind 8 km/h", "en": "Hot & dry · Wind 8 km/h", "pt": "Quente e seco · Vento 8 km/h" } },
+    "importance": { "de": "KO-Spiel – Ein Spiel, alles entscheidet.", "en": "Knockout – One game decides it all.", "pt": "Eliminatória – Um jogo decide tudo." }
+  },
+  {
+    "id": "fra-jpn",
+    "round": { "de": "Achtelfinale", "en": "Round of 32", "pt": "Oitavas de Final" },
+    "date": "2026-07-03T22:00:00Z",
+    "venue": { "de": "Los Angeles, USA", "en": "Los Angeles, USA", "pt": "Los Angeles, EUA" },
+    "homeTeam": "fra",
+    "awayTeam": "jpn",
+    "weather": { "icon": "☀️", "temp": 26, "desc": { "de": "Klar · Wind 5 km/h", "en": "Clear · Wind 5 km/h", "pt": "Limpo · Vento 5 km/h" } },
+    "importance": { "de": "KO-Spiel – Ein Spiel, alles entscheidet.", "en": "Knockout – One game decides it all.", "pt": "Eliminatória – Um jogo decide tudo." }
+  },
+  {
+    "id": "por-sui",
+    "round": { "de": "Achtelfinale", "en": "Round of 32", "pt": "Oitavas de Final" },
+    "date": "2026-07-04T19:00:00Z",
+    "venue": { "de": "San Francisco, USA", "en": "San Francisco, USA", "pt": "São Francisco, EUA" },
+    "homeTeam": "por",
+    "awayTeam": "sui",
+    "weather": { "icon": "🌫", "temp": 17, "desc": { "de": "Kühl, leichter Nebel · Wind 20 km/h", "en": "Cool, light fog · Wind 20 km/h", "pt": "Fresco, névoa leve · Vento 20 km/h" } },
+    "importance": { "de": "KO-Spiel – Ein Spiel, alles entscheidet.", "en": "Knockout – One game decides it all.", "pt": "Eliminatória – Um jogo decide tudo." }
+  },
+  {
+    "id": "usa-mar",
+    "round": { "de": "Achtelfinale", "en": "Round of 32", "pt": "Oitavas de Final" },
+    "date": "2026-07-04T22:00:00Z",
+    "venue": { "de": "Kansas City, USA", "en": "Kansas City, USA", "pt": "Kansas City, EUA" },
+    "homeTeam": "usa",
+    "awayTeam": "mar",
+    "weather": { "icon": "⛈", "temp": 24, "desc": { "de": "Gewitter möglich · Schwül", "en": "Possible thunderstorm · Humid", "pt": "Possível trovoada · Húmido" } },
+    "importance": { "de": "KO-Spiel – Ein Spiel, alles entscheidet.", "en": "Knockout – One game decides it all.", "pt": "Eliminatória – Um jogo decide tudo." }
+  },
+  {
+    "id": "bel-sen",
+    "round": { "de": "Achtelfinale", "en": "Round of 32", "pt": "Oitavas de Final" },
+    "date": "2026-07-05T19:00:00Z",
+    "venue": { "de": "Atlanta, USA", "en": "Atlanta, USA", "pt": "Atlanta, EUA" },
+    "homeTeam": "bel",
+    "awayTeam": "sen",
+    "weather": { "icon": "☀️", "temp": 30, "desc": { "de": "Warm und sonnig · Wind 10 km/h", "en": "Warm & sunny · Wind 10 km/h", "pt": "Quente e ensolarado · Vento 10 km/h" } },
+    "importance": { "de": "KO-Spiel – Ein Spiel, alles entscheidet.", "en": "Knockout – One game decides it all.", "pt": "Eliminatória – Um jogo decide tudo." }
+  },
+  {
+    "id": "ned-kor",
+    "round": { "de": "Achtelfinale", "en": "Round of 32", "pt": "Oitavas de Final" },
+    "date": "2026-07-05T22:00:00Z",
+    "venue": { "de": "Houston, USA", "en": "Houston, USA", "pt": "Houston, EUA" },
+    "homeTeam": "ned",
+    "awayTeam": "kor",
+    "weather": { "icon": "☀️", "temp": 34, "desc": { "de": "Sehr heiß · Wind 6 km/h", "en": "Very hot · Wind 6 km/h", "pt": "Muito quente · Vento 6 km/h" } },
+    "importance": { "de": "KO-Spiel – Ein Spiel, alles entscheidet.", "en": "Knockout – One game decides it all.", "pt": "Eliminatória – Um jogo decide tudo." }
+  },
+  {
+    "id": "ita-aus",
+    "round": { "de": "Achtelfinale", "en": "Round of 32", "pt": "Oitavas de Final" },
+    "date": "2026-07-06T19:00:00Z",
+    "venue": { "de": "Vancouver, Kanada", "en": "Vancouver, Canada", "pt": "Vancouver, Canadá" },
+    "homeTeam": "ita",
+    "awayTeam": "aus",
+    "weather": { "icon": "🌤", "temp": 21, "desc": { "de": "Angenehm · Wind 14 km/h", "en": "Pleasant · Wind 14 km/h", "pt": "Agradável · Vento 14 km/h" } },
+    "importance": { "de": "KO-Spiel – Ein Spiel, alles entscheidet.", "en": "Knockout – One game decides it all.", "pt": "Eliminatória – Um jogo decide tudo." }
+  },
+  {
+    "id": "col-ecu",
+    "round": { "de": "Achtelfinale", "en": "Round of 32", "pt": "Oitavas de Final" },
+    "date": "2026-07-06T22:00:00Z",
+    "venue": { "de": "Toronto, Kanada", "en": "Toronto, Canada", "pt": "Toronto, Canadá" },
+    "homeTeam": "col",
+    "awayTeam": "ecu",
+    "weather": { "icon": "⛅", "temp": 23, "desc": { "de": "Wechselhaft · Wind 12 km/h", "en": "Partly cloudy · Wind 12 km/h", "pt": "Parcialmente nublado · Vento 12 km/h" } },
+    "importance": { "de": "KO-Spiel – Ein Spiel, alles entscheidet.", "en": "Knockout – One game decides it all.", "pt": "Eliminatória – Um jogo decide tudo." }
+  },
+  {
+    "id": "uru-cmr",
+    "round": { "de": "Achtelfinale", "en": "Round of 32", "pt": "Oitavas de Final" },
+    "date": "2026-07-07T19:00:00Z",
+    "venue": { "de": "Philadelphia, USA", "en": "Philadelphia, USA", "pt": "Filadélfia, EUA" },
+    "homeTeam": "uru",
+    "awayTeam": "cmr",
+    "weather": { "icon": "🌧", "temp": 25, "desc": { "de": "Regen · Wind 16 km/h", "en": "Rain · Wind 16 km/h", "pt": "Chuva · Vento 16 km/h" } },
+    "importance": { "de": "KO-Spiel – Ein Spiel, alles entscheidet.", "en": "Knockout – One game decides it all.", "pt": "Eliminatória – Um jogo decide tudo." }
+  },
+  {
+    "id": "can-civ",
+    "round": { "de": "Achtelfinale", "en": "Round of 32", "pt": "Oitavas de Final" },
+    "date": "2026-07-07T22:00:00Z",
+    "venue": { "de": "Boston, USA", "en": "Boston, USA", "pt": "Boston, EUA" },
+    "homeTeam": "can",
+    "awayTeam": "civ",
+    "weather": { "icon": "🌤", "temp": 24, "desc": { "de": "Überwiegend sonnig · Wind 10 km/h", "en": "Mostly sunny · Wind 10 km/h", "pt": "Maioritariamente soalheiro · Vento 10 km/h" } },
+    "importance": { "de": "KO-Spiel – Ein Spiel, alles entscheidet.", "en": "Knockout – One game decides it all.", "pt": "Eliminatória – Um jogo decide tudo." }
+  },
+  {
+    "id": "srb-gha",
+    "round": { "de": "Achtelfinale", "en": "Round of 32", "pt": "Oitavas de Final" },
+    "date": "2026-07-08T19:00:00Z",
+    "venue": { "de": "Mexiko-Stadt, Mexiko", "en": "Mexico City, Mexico", "pt": "Cidade do México, México" },
+    "homeTeam": "srb",
+    "awayTeam": "gha",
+    "weather": { "icon": "⛅", "temp": 20, "desc": { "de": "Bedeckt · Wind 8 km/h", "en": "Overcast · Wind 8 km/h", "pt": "Nublado · Vento 8 km/h" } },
+    "importance": { "de": "KO-Spiel – Ein Spiel, alles entscheidet.", "en": "Knockout – One game decides it all.", "pt": "Eliminatória – Um jogo decide tudo." }
+  },
+  {
+    "id": "pol-nga",
+    "round": { "de": "Achtelfinale", "en": "Round of 32", "pt": "Oitavas de Final" },
+    "date": "2026-07-08T22:00:00Z",
+    "venue": { "de": "Guadalajara, Mexiko", "en": "Guadalajara, Mexico", "pt": "Guadalajara, México" },
+    "homeTeam": "pol",
+    "awayTeam": "nga",
+    "weather": { "icon": "☀️", "temp": 27, "desc": { "de": "Warm und trocken · Wind 7 km/h", "en": "Warm & dry · Wind 7 km/h", "pt": "Quente e seco · Vento 7 km/h" } },
+    "importance": { "de": "KO-Spiel – Ein Spiel, alles entscheidet.", "en": "Knockout – One game decides it all.", "pt": "Eliminatória – Um jogo decide tudo." }
+  },
+  {
+    "id": "tur-irn",
+    "round": { "de": "Achtelfinale", "en": "Round of 32", "pt": "Oitavas de Final" },
+    "date": "2026-07-09T19:00:00Z",
+    "venue": { "de": "Monterrey, Mexiko", "en": "Monterrey, Mexico", "pt": "Monterrey, México" },
+    "homeTeam": "tur",
+    "awayTeam": "irn",
+    "weather": { "icon": "☀️", "temp": 35, "desc": { "de": "Sehr heiß · Wind 5 km/h", "en": "Very hot · Wind 5 km/h", "pt": "Muito quente · Vento 5 km/h" } },
+    "importance": { "de": "KO-Spiel – Ein Spiel, alles entscheidet.", "en": "Knockout – One game decides it all.", "pt": "Eliminatória – Um jogo decide tudo." }
+  }
+]

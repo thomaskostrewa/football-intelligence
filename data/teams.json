@@ -1,0 +1,226 @@
+{
+  "ger": {
+    "id": "ger", "code": "GER", "flag": "🇩🇪",
+    "name": { "de": "Deutschland", "en": "Germany", "pt": "Alemanha" },
+    "xgAvg": 1.70, "goalsAgainstAvg": 0.92,
+    "form": ["W", "W", "D", "W", "W"],
+    "newsKeywords": ["Germany", "Deutschland", "DFB", "Musiala", "Wirtz"]
+  },
+  "mex": {
+    "id": "mex", "code": "MEX", "flag": "🇲🇽",
+    "name": { "de": "Mexiko", "en": "Mexico", "pt": "México" },
+    "xgAvg": 1.38, "goalsAgainstAvg": 1.40,
+    "form": ["W", "D", "W", "L", "W"],
+    "newsKeywords": ["Mexico", "Mexiko", "El Tri", "Lozano", "Jimenez"]
+  },
+  "esp": {
+    "id": "esp", "code": "ESP", "flag": "🇪🇸",
+    "name": { "de": "Spanien", "en": "Spain", "pt": "Espanha" },
+    "xgAvg": 1.92, "goalsAgainstAvg": 0.78,
+    "form": ["W", "W", "W", "D", "W"],
+    "newsKeywords": ["Spain", "Spanien", "España", "Yamal", "Pedri", "Morata"]
+  },
+  "bra": {
+    "id": "bra", "code": "BRA", "flag": "🇧🇷",
+    "name": { "de": "Brasilien", "en": "Brazil", "pt": "Brasil" },
+    "xgAvg": 1.85, "goalsAgainstAvg": 0.95,
+    "form": ["W", "W", "L", "W", "W"],
+    "newsKeywords": ["Brazil", "Brasil", "Brasilien", "Vinicius", "Endrick", "Seleção"]
+  },
+  "eng": {
+    "id": "eng", "code": "ENG", "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+    "name": { "de": "England", "en": "England", "pt": "Inglaterra" },
+    "xgAvg": 1.65, "goalsAgainstAvg": 1.05,
+    "form": ["W", "D", "W", "W", "D"],
+    "newsKeywords": ["England", "Three Lions", "Kane", "Bellingham", "Saka"]
+  },
+  "cod": {
+    "id": "cod", "code": "COD", "flag": "🇨🇩",
+    "name": { "de": "DR Kongo", "en": "DR Congo", "pt": "RD Congo" },
+    "xgAvg": 0.95, "goalsAgainstAvg": 1.60,
+    "form": ["W", "L", "W", "W", "D"],
+    "newsKeywords": ["DR Congo", "Congo", "Lukaku", "AFCON"]
+  },
+  "arg": {
+    "id": "arg", "code": "ARG", "flag": "🇦🇷",
+    "name": { "de": "Argentinien", "en": "Argentina", "pt": "Argentina" },
+    "xgAvg": 1.78, "goalsAgainstAvg": 0.88,
+    "form": ["W", "W", "W", "D", "W"],
+    "newsKeywords": ["Argentina", "Messi", "Albiceleste", "Di María", "Alvarez"]
+  },
+  "cro": {
+    "id": "cro", "code": "CRO", "flag": "🇭🇷",
+    "name": { "de": "Kroatien", "en": "Croatia", "pt": "Croácia" },
+    "xgAvg": 1.25, "goalsAgainstAvg": 1.10,
+    "form": ["D", "W", "W", "L", "W"],
+    "newsKeywords": ["Croatia", "Kroatien", "Modric", "Kovacic", "Gvardiol"]
+  },
+  "fra": {
+    "id": "fra", "code": "FRA", "flag": "🇫🇷",
+    "name": { "de": "Frankreich", "en": "France", "pt": "França" },
+    "xgAvg": 1.95, "goalsAgainstAvg": 0.80,
+    "form": ["W", "W", "W", "W", "D"],
+    "newsKeywords": ["France", "Frankreich", "Mbappé", "Dembélé", "Les Bleus"]
+  },
+  "jpn": {
+    "id": "jpn", "code": "JPN", "flag": "🇯🇵",
+    "name": { "de": "Japan", "en": "Japan", "pt": "Japão" },
+    "xgAvg": 1.10, "goalsAgainstAvg": 1.20,
+    "form": ["W", "W", "D", "L", "W"],
+    "newsKeywords": ["Japan", "Samurai Blue", "Mitoma", "Kubo", "Kamada"]
+  },
+  "por": {
+    "id": "por", "code": "POR", "flag": "🇵🇹",
+    "name": { "de": "Portugal", "en": "Portugal", "pt": "Portugal" },
+    "xgAvg": 1.88, "goalsAgainstAvg": 0.85,
+    "form": ["W", "W", "W", "W", "W"],
+    "newsKeywords": ["Portugal", "Ronaldo", "Leão", "Félix", "Selecção"]
+  },
+  "sui": {
+    "id": "sui", "code": "SUI", "flag": "🇨🇭",
+    "name": { "de": "Schweiz", "en": "Switzerland", "pt": "Suíça" },
+    "xgAvg": 1.30, "goalsAgainstAvg": 1.15,
+    "form": ["W", "D", "W", "D", "W"],
+    "newsKeywords": ["Switzerland", "Schweiz", "Xhaka", "Shaqiri", "Nati"]
+  },
+  "usa": {
+    "id": "usa", "code": "USA", "flag": "🇺🇸",
+    "name": { "de": "USA", "en": "USA", "pt": "EUA" },
+    "xgAvg": 1.42, "goalsAgainstAvg": 1.25,
+    "form": ["W", "W", "D", "W", "L"],
+    "newsKeywords": ["USA", "USMNT", "Pulisic", "Reyna", "Weah"]
+  },
+  "mar": {
+    "id": "mar", "code": "MAR", "flag": "🇲🇦",
+    "name": { "de": "Marokko", "en": "Morocco", "pt": "Marrocos" },
+    "xgAvg": 1.15, "goalsAgainstAvg": 0.98,
+    "form": ["W", "D", "W", "W", "D"],
+    "newsKeywords": ["Morocco", "Marokko", "Ziyech", "Hakimi", "Atlas Lions"]
+  },
+  "bel": {
+    "id": "bel", "code": "BEL", "flag": "🇧🇪",
+    "name": { "de": "Belgien", "en": "Belgium", "pt": "Bélgica" },
+    "xgAvg": 1.55, "goalsAgainstAvg": 1.10,
+    "form": ["W", "D", "W", "W", "D"],
+    "newsKeywords": ["Belgium", "Belgien", "De Bruyne", "Lukaku", "Red Devils"]
+  },
+  "sen": {
+    "id": "sen", "code": "SEN", "flag": "🇸🇳",
+    "name": { "de": "Senegal", "en": "Senegal", "pt": "Senegal" },
+    "xgAvg": 1.20, "goalsAgainstAvg": 1.05,
+    "form": ["W", "W", "D", "W", "L"],
+    "newsKeywords": ["Senegal", "Mané", "Diallo", "Lions de la Téranga"]
+  },
+  "ned": {
+    "id": "ned", "code": "NED", "flag": "🇳🇱",
+    "name": { "de": "Niederlande", "en": "Netherlands", "pt": "Países Baixos" },
+    "xgAvg": 1.60, "goalsAgainstAvg": 1.00,
+    "form": ["W", "W", "D", "W", "W"],
+    "newsKeywords": ["Netherlands", "Holland", "Niederlande", "Oranje", "Gakpo", "van Dijk"]
+  },
+  "kor": {
+    "id": "kor", "code": "KOR", "flag": "🇰🇷",
+    "name": { "de": "Südkorea", "en": "South Korea", "pt": "Coreia do Sul" },
+    "xgAvg": 1.05, "goalsAgainstAvg": 1.30,
+    "form": ["W", "D", "L", "W", "W"],
+    "newsKeywords": ["South Korea", "Südkorea", "Son", "Lee", "Taeguk Warriors"]
+  },
+  "ita": {
+    "id": "ita", "code": "ITA", "flag": "🇮🇹",
+    "name": { "de": "Italien", "en": "Italy", "pt": "Itália" },
+    "xgAvg": 1.48, "goalsAgainstAvg": 0.95,
+    "form": ["D", "W", "W", "D", "W"],
+    "newsKeywords": ["Italy", "Italia", "Azzurri", "Chiesa", "Barella", "Donnarumma"]
+  },
+  "aus": {
+    "id": "aus", "code": "AUS", "flag": "🇦🇺",
+    "name": { "de": "Australien", "en": "Australia", "pt": "Austrália" },
+    "xgAvg": 0.98, "goalsAgainstAvg": 1.45,
+    "form": ["W", "L", "W", "D", "W"],
+    "newsKeywords": ["Australia", "Socceroos", "Irvine", "Leckie"]
+  },
+  "col": {
+    "id": "col", "code": "COL", "flag": "🇨🇴",
+    "name": { "de": "Kolumbien", "en": "Colombia", "pt": "Colômbia" },
+    "xgAvg": 1.55, "goalsAgainstAvg": 1.10,
+    "form": ["W", "W", "W", "D", "W"],
+    "newsKeywords": ["Colombia", "Kolumbien", "James Rodriguez", "Díaz", "Arias"]
+  },
+  "ecu": {
+    "id": "ecu", "code": "ECU", "flag": "🇪🇨",
+    "name": { "de": "Ecuador", "en": "Ecuador", "pt": "Equador" },
+    "xgAvg": 1.18, "goalsAgainstAvg": 1.35,
+    "form": ["W", "D", "L", "W", "W"],
+    "newsKeywords": ["Ecuador", "Estupinan", "Valencia", "La Tri"]
+  },
+  "uru": {
+    "id": "uru", "code": "URU", "flag": "🇺🇾",
+    "name": { "de": "Uruguay", "en": "Uruguay", "pt": "Uruguai" },
+    "xgAvg": 1.35, "goalsAgainstAvg": 1.00,
+    "form": ["W", "D", "W", "W", "D"],
+    "newsKeywords": ["Uruguay", "Nunez", "Valverde", "Celeste"]
+  },
+  "cmr": {
+    "id": "cmr", "code": "CMR", "flag": "🇨🇲",
+    "name": { "de": "Kamerun", "en": "Cameroon", "pt": "Camarões" },
+    "xgAvg": 0.90, "goalsAgainstAvg": 1.55,
+    "form": ["L", "W", "D", "W", "L"],
+    "newsKeywords": ["Cameroon", "Kamerun", "Eto'o", "Aboubakar", "Indomitable Lions"]
+  },
+  "can": {
+    "id": "can", "code": "CAN", "flag": "🇨🇦",
+    "name": { "de": "Kanada", "en": "Canada", "pt": "Canadá" },
+    "xgAvg": 1.40, "goalsAgainstAvg": 1.20,
+    "form": ["W", "W", "D", "L", "W"],
+    "newsKeywords": ["Canada", "Kanada", "Davies", "David", "CanMNT"]
+  },
+  "civ": {
+    "id": "civ", "code": "CIV", "flag": "🇨🇮",
+    "name": { "de": "Elfenbeinküste", "en": "Ivory Coast", "pt": "Costa do Marfim" },
+    "xgAvg": 1.25, "goalsAgainstAvg": 1.30,
+    "form": ["W", "D", "W", "D", "W"],
+    "newsKeywords": ["Ivory Coast", "Côte d'Ivoire", "Zaha", "Pepe", "Elephants"]
+  },
+  "srb": {
+    "id": "srb", "code": "SRB", "flag": "🇷🇸",
+    "name": { "de": "Serbien", "en": "Serbia", "pt": "Sérvia" },
+    "xgAvg": 1.30, "goalsAgainstAvg": 1.25,
+    "form": ["W", "D", "W", "L", "W"],
+    "newsKeywords": ["Serbia", "Serbien", "Vlahovic", "Milinkovic-Savic", "Tadic"]
+  },
+  "gha": {
+    "id": "gha", "code": "GHA", "flag": "🇬🇭",
+    "name": { "de": "Ghana", "en": "Ghana", "pt": "Gana" },
+    "xgAvg": 1.00, "goalsAgainstAvg": 1.50,
+    "form": ["D", "W", "L", "W", "D"],
+    "newsKeywords": ["Ghana", "Black Stars", "Kudus", "Jordan Ayew"]
+  },
+  "pol": {
+    "id": "pol", "code": "POL", "flag": "🇵🇱",
+    "name": { "de": "Polen", "en": "Poland", "pt": "Polónia" },
+    "xgAvg": 1.20, "goalsAgainstAvg": 1.20,
+    "form": ["W", "D", "W", "D", "L"],
+    "newsKeywords": ["Poland", "Polen", "Lewandowski", "Szczęsny", "Biało-Czerwoni"]
+  },
+  "nga": {
+    "id": "nga", "code": "NGA", "flag": "🇳🇬",
+    "name": { "de": "Nigeria", "en": "Nigeria", "pt": "Nigéria" },
+    "xgAvg": 1.10, "goalsAgainstAvg": 1.40,
+    "form": ["L", "W", "W", "D", "W"],
+    "newsKeywords": ["Nigeria", "Super Eagles", "Osimhen", "Lookman"]
+  },
+  "tur": {
+    "id": "tur", "code": "TUR", "flag": "🇹🇷",
+    "name": { "de": "Türkei", "en": "Turkey", "pt": "Turquia" },
+    "xgAvg": 1.45, "goalsAgainstAvg": 1.20,
+    "form": ["W", "W", "D", "W", "L"],
+    "newsKeywords": ["Turkey", "Türkei", "Calhanoglu", "Guler", "Crescent Stars"]
+  },
+  "irn": {
+    "id": "irn", "code": "IRN", "flag": "🇮🇷",
+    "name": { "de": "Iran", "en": "Iran", "pt": "Irão" },
+    "xgAvg": 0.85, "goalsAgainstAvg": 1.20,
+    "form": ["W", "D", "W", "D", "L"],
+    "newsKeywords": ["Iran", "Team Melli", "Taremi", "Jahanbakhsh"]
+  }
+}
