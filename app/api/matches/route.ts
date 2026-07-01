@@ -1,27 +1,40 @@
 import { NextResponse } from 'next/server'
-import matchesData from '@/data/matches.json'
-import teamsData from '@/data/teams.json'
+import { getBaseTeams, getAllTeams, isResolvedMatch } from '@/lib/match-view-model'
+import { getFixtureFeed } from '@/lib/fixtures/provider'
 
-export const dynamic = 'force-static'
+export const dynamic = 'force-dynamic'
 
-export function GET() {
-  const teams = teamsData as Record<string, { id: string; name: { de: string; en: string; pt: string }; flag: string }>
-  const matches = (matchesData as Array<{ id: string; homeTeam: string; awayTeam: string; date: string; round: { de: string; en: string; pt: string }; venue: { de: string; en: string; pt: string } }>).map(m => ({
-    id: m.id,
-    date: m.date,
-    round: m.round,
-    venue: m.venue,
-    homeTeam: {
-      id: m.homeTeam,
-      name: teams[m.homeTeam]?.name,
-      flag: teams[m.homeTeam]?.flag,
-    },
-    awayTeam: {
-      id: m.awayTeam,
-      name: teams[m.awayTeam]?.name,
-      flag: teams[m.awayTeam]?.flag,
-    },
-  }))
+export async function GET() {
+  const baseTeams = getBaseTeams()
+  const feed = await getFixtureFeed(baseTeams)
+  const teams = getAllTeams(feed.teams)
+  const matches = feed.matches.map(m => {
+    const homeTeam = teams[m.homeTeam]
+    const awayTeam = teams[m.awayTeam]
 
-  return NextResponse.json(matches)
+    return {
+      id: m.id,
+      providerId: m.providerId,
+      provider: m.provider,
+      date: m.date,
+      round: m.round,
+      venue: m.venue,
+      homeTeam: {
+        id: m.homeTeam,
+        name: homeTeam?.name,
+        flag: homeTeam?.flag,
+      },
+      awayTeam: {
+        id: m.awayTeam,
+        name: awayTeam?.name,
+        flag: awayTeam?.flag,
+      },
+      resolved: isResolvedMatch(m, teams),
+    }
+  })
+
+  return NextResponse.json({
+    source: feed.source,
+    matches,
+  })
 }
