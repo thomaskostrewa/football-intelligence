@@ -1,4 +1,5 @@
 import type { MatchIntelligenceResponse } from '@/lib/model/matchIntelligence'
+import DataQualityNotice from './DataQualityNotice'
 
 type Props = {
   intelligence: MatchIntelligenceResponse
@@ -40,6 +41,9 @@ export default function RecommendationCards({ intelligence }: Props) {
   return (
     <div className="bg-card rounded-xl border border-border p-5 md:p-6">
       <h2 className="text-sm font-semibold text-text-primary mb-4">Tipp-Empfehlungen</h2>
+      <div className="mb-4">
+        <DataQualityNotice intelligence={intelligence} compact />
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {cards.map(card => (
           <div key={card.title} className="rounded-lg border border-border p-4 bg-background">

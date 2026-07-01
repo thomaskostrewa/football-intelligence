@@ -2,6 +2,7 @@ import { getFixtureLineupsWithHealth, getFixturePredictionWithHealth } from '@/l
 import { getSoccerOddsForMatchWithHealth } from '@/lib/data-sources/theOddsApi'
 import { getOpenMeteoForecast } from '@/lib/data-sources/openMeteo'
 import { getTeamEloRating } from '@/lib/data/teamEloRatings'
+import { getVenueCoordinates } from '@/lib/data/venueCoordinates'
 import { sourceHealth, type SourceHealth } from '@/lib/data-sources/health'
 import type { MatchData, TeamData } from '@/lib/match-view-model'
 
@@ -94,6 +95,7 @@ export async function buildMatchModelInput({
   refresh?: boolean
 }): Promise<MatchModelInput> {
   const apiFootballFixtureId = match.provider === 'api-football' ? match.providerId : undefined
+  const venueCoordinates = getVenueCoordinates(match.venue.en) ?? getVenueCoordinates(match.venue.de)
 
   const [apiFootballResult, oddsResult, openMeteo, lineupsResult] = await Promise.all([
     apiFootballFixtureId
@@ -103,7 +105,7 @@ export async function buildMatchModelInput({
           health: sourceHealth('fallback', 'Keine API-Football Fixture-ID verfuegbar. Lokale Fixtures und Fallback-Staerken werden genutzt.'),
         }),
     getSoccerOddsForMatchWithHealth(homeTeam.name.en, awayTeam.name.en, match.date, refresh),
-    getOpenMeteoForecast(undefined, match.date, refresh),
+    getOpenMeteoForecast(venueCoordinates, match.date, refresh),
     apiFootballFixtureId
       ? getFixtureLineupsWithHealth(apiFootballFixtureId, refresh)
       : Promise.resolve({
@@ -155,8 +157,8 @@ export async function buildMatchModelInput({
         ? sourceHealth('active', 'Elo-Fallback ist fuer beide Teams verfuegbar.')
         : sourceHealth('no-data', 'Elo-Fallback fehlt fuer mindestens ein Team.'),
       weather: openMeteo ?? localWeather
-        ? sourceHealth('active', 'Wetterdaten wurden geladen oder lokal gepflegt.')
-        : sourceHealth('no-data', 'Wetterdaten sind aktuell nicht verfuegbar.'),
+        ? sourceHealth('active', openMeteo ? 'Live-Wetterdaten wurden geladen.' : 'Lokal gepflegte Wetterdaten werden genutzt.')
+        : sourceHealth('no-data', venueCoordinates ? 'Wetterdaten sind aktuell nicht verfuegbar.' : 'Kein verwertbarer Spielort fuer Wetterdaten verfuegbar.'),
       lineups: lineupsResult.health,
     },
   }

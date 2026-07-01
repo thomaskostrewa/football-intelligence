@@ -43,6 +43,26 @@ const freshnessLabels: Array<{
   { key: 'hasLineups', label: 'Lineups', window: '10 Min Cache' },
 ]
 
+function isCriticalStatus(status: string) {
+  return status === 'limited' || status === 'blocked' || status === 'error' || status === 'missing-key'
+}
+
+function statusLabel(
+  key: keyof MatchIntelligenceResponse['sourceStatus'],
+  active: boolean,
+  status: string
+) {
+  if (active) return 'aktiv'
+  if (status === 'missing-key') return 'Key fehlt'
+  if (status === 'limited') return 'Kontingent leer'
+  if (status === 'blocked') return 'Plan blockiert'
+  if (status === 'error') return 'Fehler'
+  if (status === 'fallback') return 'Fallback'
+  if (status === 'no-data') return 'keine Daten'
+  if (key === 'hasLineups') return 'noch nicht verfuegbar'
+  return 'fehlt'
+}
+
 export default function SourceTransparencyPanel({ intelligence }: Props) {
   const { timezone, timezoneLabel } = useTimezone()
   const checkedAt = new Intl.DateTimeFormat('de-DE', {
@@ -88,13 +108,13 @@ export default function SourceTransparencyPanel({ intelligence }: Props) {
         {sourceLabels.map(([key, label]) => {
           const active = intelligence.sourceStatus[key]
           const health = intelligence.sourceHealth[healthKeys[key] ?? 'apiFootball']
-          const isWarning = health.status === 'limited' || health.status === 'blocked' || health.status === 'error'
+          const isWarning = isCriticalStatus(health.status)
           return (
             <div key={key} className="space-y-0.5">
               <div className="flex items-center justify-between text-xs">
                 <span className="text-text-muted">{label}</span>
                 <span className={`font-semibold ${active ? 'text-positive' : isWarning ? 'text-[#8B2E2E]' : 'text-text-muted'}`}>
-                  {active ? 'aktiv' : isWarning ? 'Achtung' : key === 'hasLineups' ? 'noch nicht verfuegbar' : 'fehlt'}
+                  {statusLabel(key, active, health.status)}
                 </span>
               </div>
               {!active && (
@@ -107,7 +127,7 @@ export default function SourceTransparencyPanel({ intelligence }: Props) {
         })}
       </div>
 
-      {Object.entries(intelligence.sourceHealth).some(([, health]) => health.status === 'limited' || health.status === 'blocked' || health.status === 'error') && (
+      {Object.entries(intelligence.sourceHealth).some(([, health]) => isCriticalStatus(health.status)) && (
         <div className="mt-4 rounded-lg border border-[#E9B8B8] bg-[#FDF3F3] p-3">
           <p className="text-xs font-semibold text-[#8B2E2E]">Externe Datenquelle eingeschraenkt</p>
           <p className="text-[11px] text-[#8B2E2E] mt-1 leading-relaxed">

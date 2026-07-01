@@ -186,16 +186,19 @@ export function computeFactors(
   }
 
   // 5. Weather
-  factors.push({
-    icon: '🌦',
-    titleKey: 'weather',
-    title: { de: 'Wetterfaktor', en: 'Weather factor', pt: 'Fator meteorológico' },
-    description: {
-      de: weather.desc.de + ' kann die Torerwartung leicht beeinflussen.',
-      en: weather.desc.en + ' may slightly influence goal expectation.',
-      pt: weather.desc.pt + ' pode influenciar ligeiramente a expectativa de golos.',
-    },
-  })
+  const pendingWeather = weather.desc.en.toLowerCase().includes('pending')
+  if (!pendingWeather) {
+    factors.push({
+      icon: '🌦',
+      titleKey: 'weather',
+      title: { de: 'Wetterfaktor', en: 'Weather factor', pt: 'Fator meteorológico' },
+      description: {
+        de: weather.desc.de + ' kann die Torerwartung leicht beeinflussen.',
+        en: weather.desc.en + ' may slightly influence goal expectation.',
+        pt: weather.desc.pt + ' pode influenciar ligeiramente a expectativa de golos.',
+      },
+    })
+  }
 
   return factors.slice(0, 5)
 }
