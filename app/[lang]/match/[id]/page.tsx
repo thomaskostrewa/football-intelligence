@@ -1,10 +1,6 @@
 import { notFound } from 'next/navigation'
-import matchesData from '@/data/matches.json'
-import teamsData from '@/data/teams.json'
-import { computePrediction, computeFactors } from '@/lib/prediction'
-import { generateReasoning } from '@/lib/reasoning'
-import { fetchNews } from '@/lib/news'
 import { isValidLang, DEFAULT_LANG } from '@/lib/i18n'
+import { getMatchViewModel, getStaticMatchParams } from '@/lib/match-view-model'
 import Header from '@/components/Header'
 import MatchNavigation from '@/components/MatchNavigation'
 import MatchHeader from '@/components/MatchHeader'
@@ -17,61 +13,27 @@ import ConclusionCard from '@/components/ConclusionCard'
 
 type Params = { lang: string; id: string }
 
-type MatchData = {
-  id: string
-  homeTeam: string
-  awayTeam: string
-  round: { de: string; en: string; pt: string }
-  date: string
-  venue: { de: string; en: string; pt: string }
-  weather: { icon: string; temp: number; desc: { de: string; en: string; pt: string } }
-  importance: { de: string; en: string; pt: string }
-}
-
-type TeamData = {
-  id: string; code: string; flag: string
-  name: { de: string; en: string; pt: string }
-  xgAvg: number; goalsAgainstAvg: number; form: string[]
-  newsKeywords: string[]
-}
-
 export async function generateStaticParams() {
   const langs = ['de', 'en', 'pt']
-  const matches = matchesData as MatchData[]
-  return langs.flatMap(lang => matches.map(m => ({ lang, id: m.id })))
+  return langs.flatMap(lang => getStaticMatchParams().map(id => ({ lang, id })))
 }
 
 export default async function MatchPage({ params }: { params: Params }) {
   const lang = isValidLang(params.lang) ? params.lang : DEFAULT_LANG
-  const matches = matchesData as MatchData[]
-  const teams = teamsData as Record<string, TeamData>
+  const viewModel = await getMatchViewModel(params.id, lang)
+  if (!viewModel) notFound()
 
-  const match = matches.find(m => m.id === params.id)
-  if (!match) notFound()
-
-  const homeTeam = teams[match.homeTeam]
-  const awayTeam = teams[match.awayTeam]
-  if (!homeTeam || !awayTeam) notFound()
-
-  const prediction = computePrediction(homeTeam.xgAvg, awayTeam.xgAvg)
-  const factors = computeFactors(homeTeam, awayTeam, prediction, match.weather)
-
-  // Parallel fetch – reasoning + news
-  const [reasoning, newsResult] = await Promise.allSettled([
-    generateReasoning({
-      homeTeam, awayTeam,
-      prediction: prediction.mostLikelyResult,
-      homeWinProb: prediction.homeWinProb,
-      drawProb: prediction.drawProb,
-      awayWinProb: prediction.awayWinProb,
-      weather: match.weather,
-      lang,
-    }),
-    fetchNews([...homeTeam.newsKeywords, ...awayTeam.newsKeywords, 'World Cup', 'WM 2026']),
-  ])
-
-  const reasoningText = reasoning.status === 'fulfilled' ? reasoning.value : ''
-  const news = newsResult.status === 'fulfilled' ? newsResult.value : []
+  const {
+    match,
+    matches,
+    teams,
+    homeTeam,
+    awayTeam,
+    prediction,
+    factors,
+    reasoning,
+    news,
+  } = viewModel
 
   return (
     <div className="min-h-screen bg-background">
@@ -106,7 +68,7 @@ export default async function MatchPage({ params }: { params: Params }) {
                 <TopResults topResults={prediction.topResults} lang={lang} />
                 <ConclusionCard
                   result={prediction.mostLikelyResult}
-                  reasoning={reasoningText}
+                  reasoning={reasoning}
                   lang={lang}
                 />
               </div>

@@ -6,6 +6,14 @@ export interface NewsItem {
   source: string
   publishedAt: string // ISO
   timeAgo: string
+  relevanceScore?: number
+  matchedKeywords?: string[]
+}
+
+type FetchNewsInput = string[] | {
+  keywords: string[]
+  requiredKeywords?: string[]
+  limit?: number
 }
 
 const RSS_FEEDS = [
@@ -17,11 +25,58 @@ const RSS_FEEDS = [
 
 function timeAgo(dateStr: string): string {
   const diff = Date.now() - new Date(dateStr).getTime()
-  const minutes = Math.floor(diff / 60000)
-  if (minutes < 60) return `${minutes}:${String(Math.floor((diff % 60000) / 1000)).padStart(2, '0')}`
+  const minutes = Math.max(0, Math.floor(diff / 60000))
+  if (minutes < 1) return 'gerade eben'
+  if (minutes < 60) return `${minutes} Min.`
   const hours = Math.floor(minutes / 60)
-  if (hours < 24) return `${hours}:${String(minutes % 60).padStart(2, '0')}`
-  return `${Math.floor(hours / 24)}d`
+  if (hours < 24) return `${hours} Std.`
+  return `${Math.floor(hours / 24)} Tg.`
+}
+
+function normalize(input: FetchNewsInput) {
+  if (Array.isArray(input)) {
+    return {
+      keywords: input,
+      requiredKeywords: input.filter(keyword => !/world cup|weltmeisterschaft|wm 2026/i.test(keyword)),
+      limit: 6,
+    }
+  }
+
+  return {
+    keywords: input.keywords,
+    requiredKeywords: input.requiredKeywords ?? input.keywords,
+    limit: input.limit ?? 6,
+  }
+}
+
+function keywordMatches(text: string, keywords: string[]) {
+  const lower = text.toLowerCase()
+  return keywords.filter(keyword => lower.includes(keyword.toLowerCase()))
+}
+
+function rankNews(items: NewsItem[], requiredKeywords: string[], limit: number): NewsItem[] {
+  return items
+    .map(item => {
+      const text = `${item.title} ${item.source}`
+      const matchedKeywords = keywordMatches(text, requiredKeywords)
+      const sourceBoost = /kicker|espn|bbc|goal/i.test(item.source) ? 0.1 : 0
+      const freshnessHours = Math.max(0, (Date.now() - new Date(item.publishedAt).getTime()) / 3600000)
+      const freshnessScore = Math.max(0, 0.2 - freshnessHours / 120)
+      const relevanceScore = Math.min(1, matchedKeywords.length * 0.3 + sourceBoost + freshnessScore)
+
+      return {
+        ...item,
+        matchedKeywords,
+        relevanceScore: Number(relevanceScore.toFixed(3)),
+      }
+    })
+    .filter(item => item.matchedKeywords.length > 0)
+    .sort(
+      (a, b) =>
+        (b.relevanceScore ?? 0) - (a.relevanceScore ?? 0) ||
+        new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+    )
+    .slice(0, limit)
 }
 
 async function fetchFeed(url: string, source: string, keywords: string[]): Promise<NewsItem[]> {
@@ -61,7 +116,8 @@ async function fetchFeed(url: string, source: string, keywords: string[]): Promi
   }
 }
 
-export async function fetchNews(keywords: string[]): Promise<NewsItem[]> {
+export async function fetchNews(input: FetchNewsInput): Promise<NewsItem[]> {
+  const { keywords, requiredKeywords, limit } = normalize(input)
   const results = await Promise.allSettled(
     RSS_FEEDS.map(f => fetchFeed(f.url, f.source, keywords))
   )
@@ -83,12 +139,14 @@ export async function fetchNews(keywords: string[]): Promise<NewsItem[]> {
     }
   }
 
-  // If no real news, return mock items for demo
-  if (deduped.length === 0) {
+  const ranked = rankNews(deduped, requiredKeywords, limit)
+
+  // If no match-relevant real news are available, return mock items for demo
+  if (ranked.length === 0) {
     return getMockNews(keywords)
   }
 
-  return deduped.slice(0, 6)
+  return ranked
 }
 
 function getMockNews(keywords: string[]): NewsItem[] {
@@ -101,21 +159,27 @@ function getMockNews(keywords: string[]): NewsItem[] {
       url: '#',
       source: 'Kicker',
       publishedAt: new Date(now.getTime() - 32 * 60000).toISOString(),
-      timeAgo: '32:00',
+      timeAgo: '32 Min.',
+      relevanceScore: 0.92,
+      matchedKeywords: [team1],
     },
     {
       title: `${team2} Innenverteidiger fraglich – Entscheidung kurz vor Anpfiff`,
       url: '#',
       source: 'ESPN',
       publishedAt: new Date(now.getTime() - 55 * 60000).toISOString(),
-      timeAgo: '55:00',
+      timeAgo: '55 Min.',
+      relevanceScore: 0.86,
+      matchedKeywords: [team2],
     },
     {
       title: `Wettermodelle korrigiert – Regenwahrscheinlichkeit steigt auf 60%`,
       url: '#',
       source: 'Weather.com',
       publishedAt: new Date(now.getTime() - 90 * 60000).toISOString(),
-      timeAgo: '1:30',
+      timeAgo: '1 Std.',
+      relevanceScore: 0.72,
+      matchedKeywords: ['Wetter'],
     },
   ]
 }
