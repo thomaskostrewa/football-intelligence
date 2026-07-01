@@ -1,75 +1,36 @@
-'use client'
-
 import Link from 'next/link'
-import type { Lang } from '@/lib/i18n'
-import { t, SUPPORTED_LANGS } from '@/lib/i18n'
-
-interface HeaderProps {
-  lang: Lang
-  matchId: string
-}
 
 const NAV_ITEMS = [
-  { key: 'nav_home' as const, href: 'https://thomas-kostrewa.de' },
-  { key: 'nav_how' as const, href: 'https://thomas-kostrewa.de/how-i-build' },
-  { key: 'nav_upload' as const, href: 'https://thomas-kostrewa.de/upload-monitor' },
-  { key: 'nav_football' as const, href: null }, // current page
-  { key: 'nav_contact' as const, href: 'https://thomas-kostrewa.de/contact' },
+  { label: 'Home', href: 'https://thomas-kostrewa.de' },
+  { label: 'Rutekart', href: 'https://rutekart.thomas-kostrewa.de' },
+  { label: 'Contact', href: 'https://thomas-kostrewa.de/contact' },
 ]
 
-export default function Header({ lang, matchId }: HeaderProps) {
-  const tr = t[lang]
-
+export default function Header() {
   return (
-    <header className="sticky top-0 z-40 bg-card/95 backdrop-blur border-b border-border">
-      <div className="px-4 md:px-6 lg:px-8 h-14 flex items-center justify-between gap-4">
-        {/* Brand */}
+    <header className="relative z-40 border-b border-border bg-white text-text-primary">
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 py-4 md:flex-row md:items-center md:justify-between md:px-6 lg:px-8">
         <Link
-          href={`https://thomas-kostrewa.de`}
-          className="text-sm font-semibold tracking-widest uppercase text-text-primary hover:text-accent transition-colors shrink-0"
+          href="https://thomas-kostrewa.de"
+          className="shrink-0 text-sm font-bold uppercase tracking-[0.24em] text-[#0f766e] transition-colors hover:text-text-primary"
         >
           Thomas Kostrewa
         </Link>
 
-        {/* Nav – hidden on mobile, shown md+ */}
-        <nav className="hidden md:flex items-center gap-6">
-          {NAV_ITEMS.map(item => (
-            item.href ? (
-              <a
-                key={item.key}
-                href={item.href}
-                className="text-sm text-text-muted hover:text-text-primary transition-colors"
-              >
-                {tr[item.key]}
-              </a>
-            ) : (
-              <span
-                key={item.key}
-                className="text-sm font-medium text-accent border-b border-accent pb-0.5"
-              >
-                {tr[item.key]}
-              </span>
-            )
-          ))}
+        <nav aria-label="Main navigation">
+          <ul className="flex flex-wrap gap-1">
+            {NAV_ITEMS.map((item) => (
+              <li key={item.href}>
+                <a
+                  href={item.href}
+                  className="rounded-full px-3 py-2 text-sm font-semibold text-text-muted transition-colors hover:bg-[#0f766e]/10 hover:text-text-primary"
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
         </nav>
-
-        {/* Language switcher */}
-        <div className="flex items-center gap-2 text-sm shrink-0">
-          {SUPPORTED_LANGS.map((l, i) => (
-            <span key={l} className="flex items-center gap-2">
-              {i > 0 && <span className="text-border">|</span>}
-              <Link
-                href={`/${l}/match/${matchId}`}
-                className={l === lang
-                  ? 'font-semibold text-text-primary'
-                  : 'text-text-muted hover:text-text-primary transition-colors'
-                }
-              >
-                {l.toUpperCase()}
-              </Link>
-            </span>
-          ))}
-        </div>
       </div>
     </header>
   )

@@ -141,45 +141,5 @@ export async function fetchNews(input: FetchNewsInput): Promise<NewsItem[]> {
 
   const ranked = rankNews(deduped, requiredKeywords, limit)
 
-  // If no match-relevant real news are available, return mock items for demo
-  if (ranked.length === 0) {
-    return getMockNews(keywords)
-  }
-
   return ranked
-}
-
-function getMockNews(keywords: string[]): NewsItem[] {
-  const team1 = keywords[0] ?? 'Team A'
-  const team2 = keywords[3] ?? 'Team B'
-  const now = new Date()
-  return [
-    {
-      title: `${team1} vollständig im Training – alle Stammspieler fit`,
-      url: '#',
-      source: 'Kicker',
-      publishedAt: new Date(now.getTime() - 32 * 60000).toISOString(),
-      timeAgo: '32 Min.',
-      relevanceScore: 0.92,
-      matchedKeywords: [team1],
-    },
-    {
-      title: `${team2} Innenverteidiger fraglich – Entscheidung kurz vor Anpfiff`,
-      url: '#',
-      source: 'ESPN',
-      publishedAt: new Date(now.getTime() - 55 * 60000).toISOString(),
-      timeAgo: '55 Min.',
-      relevanceScore: 0.86,
-      matchedKeywords: [team2],
-    },
-    {
-      title: `Wettermodelle korrigiert – Regenwahrscheinlichkeit steigt auf 60%`,
-      url: '#',
-      source: 'Weather.com',
-      publishedAt: new Date(now.getTime() - 90 * 60000).toISOString(),
-      timeAgo: '1 Std.',
-      relevanceScore: 0.72,
-      matchedKeywords: ['Wetter'],
-    },
-  ]
 }
