@@ -3,7 +3,7 @@ import { fetchNews } from '@/lib/news'
 import { getMatchDataset } from '@/lib/match-view-model'
 
 export async function GET(_req: Request, { params }: { params: { id: string } }) {
-  const dataset = getMatchDataset(params.id)
+  const dataset = await getMatchDataset(params.id)
   if (!dataset) return NextResponse.json({ error: 'Match not found' }, { status: 404 })
 
   const { match, homeTeam, awayTeam } = dataset
@@ -29,5 +29,8 @@ export async function GET(_req: Request, { params }: { params: { id: string } })
     ],
     limit: 6,
   })
-  return NextResponse.json({ news }, { headers: { 'Cache-Control': 's-maxage=300, stale-while-revalidate' } })
+  return NextResponse.json(
+    { news, fixtureSource: dataset.fixtureSource },
+    { headers: { 'Cache-Control': 's-maxage=300, stale-while-revalidate' } }
+  )
 }

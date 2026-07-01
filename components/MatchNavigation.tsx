@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import type { Lang } from '@/lib/i18n'
+import type { FixtureSource } from '@/lib/fixtures/provider'
 
 interface Team {
   id: string; name: { de: string; en: string; pt: string }; flag: string
@@ -18,16 +19,27 @@ interface Props {
   teams: Record<string, Team>
   activeId: string
   lang: Lang
+  fixtureSource: FixtureSource
 }
 
-export default function MatchNavigation({ matches, teams, activeId, lang }: Props) {
+export default function MatchNavigation({ matches, teams, activeId, lang, fixtureSource }: Props) {
   const visible = matches
+  const sourceLabel = fixtureSource.isLive
+    ? fixtureSource.name
+    : lang === 'de'
+      ? 'Fallback-Daten'
+      : lang === 'pt'
+        ? 'Dados fallback'
+        : 'Fallback data'
 
   return (
     <nav className="py-2">
       <div className="px-4 pt-3 pb-2">
         <p className="text-[10px] font-semibold tracking-widest uppercase text-text-muted">
           World Cup 2026
+        </p>
+        <p className={`mt-1 text-[10px] ${fixtureSource.isLive ? 'text-positive' : 'text-accent'}`}>
+          {sourceLabel}
         </p>
       </div>
 

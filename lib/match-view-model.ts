@@ -1,5 +1,5 @@
-import matchesData from '@/data/remaining-matches.json'
 import teamsData from '@/data/teams.json'
+import { getFixtureFeed, type FixtureSource } from '@/lib/fixtures/provider'
 import { computeFactors, computePrediction } from '@/lib/prediction'
 import { generateReasoning } from '@/lib/reasoning'
 import { fetchNews } from '@/lib/news'
@@ -9,6 +9,8 @@ export type LocalizedText = { de: string; en: string; pt: string }
 
 export type MatchData = {
   id: string
+  providerId?: string
+  provider?: string
   homeTeam: string
   awayTeam: string
   round: LocalizedText
@@ -45,6 +47,7 @@ export type MatchViewModel = {
   reasoning: string
   news: Awaited<ReturnType<typeof fetchNews>>
   generatedAt: string
+  fixtureSource: FixtureSource
 }
 
 const additionalTeams: Record<string, TeamData> = {
@@ -121,6 +124,7 @@ const additionalTeams: Record<string, TeamData> = {
 }
 
 const placeholderLabels: Record<string, LocalizedText> = {
+  'provider-tbd': { de: 'Noch offen', en: 'To be determined', pt: 'A definir' },
   'w-eng-cod': { de: 'Sieger England/DR Kongo', en: 'Winner England/DR Congo', pt: 'Vencedor Inglaterra/RD Congo' },
   'w-bel-sen': { de: 'Sieger Belgien/Senegal', en: 'Winner Belgium/Senegal', pt: 'Vencedor Bélgica/Senegal' },
   'w-usa-bih': { de: 'Sieger USA/Bosnien-Herzegowina', en: 'Winner USA/Bosnia and Herzegovina', pt: 'Vencedor EUA/Bósnia e Herzegovina' },
@@ -162,7 +166,7 @@ function createPlaceholderTeam(id: string): TeamData {
   }
 }
 
-export function getAllTeams() {
+export function getBaseTeams() {
   const placeholders = Object.fromEntries(
     Object.keys(placeholderLabels).map(id => [id, createPlaceholderTeam(id)])
   ) as Record<string, TeamData>
@@ -170,19 +174,21 @@ export function getAllTeams() {
   return { ...(teamsData as Record<string, TeamData>), ...additionalTeams, ...placeholders }
 }
 
+export function getAllTeams(extraTeams: Record<string, TeamData> = {}) {
+  return { ...getBaseTeams(), ...extraTeams }
+}
+
 export function isResolvedMatch(match: MatchData, teams: Record<string, TeamData>) {
-  return Boolean(teams[match.homeTeam] && teams[match.awayTeam])
+  const homeTeam = teams[match.homeTeam]
+  const awayTeam = teams[match.awayTeam]
+  return Boolean(homeTeam && awayTeam && !homeTeam.isPlaceholder && !awayTeam.isPlaceholder)
 }
 
-export function getStaticMatchParams() {
-  const matches = matchesData as MatchData[]
-  const teams = getAllTeams()
-  return matches.filter(match => isResolvedMatch(match, teams)).map(match => match.id)
-}
-
-export function getMatchDataset(matchId: string) {
-  const matches = matchesData as MatchData[]
-  const teams = getAllTeams()
+export async function getMatchDataset(matchId: string) {
+  const baseTeams = getBaseTeams()
+  const feed = await getFixtureFeed(baseTeams)
+  const matches = feed.matches
+  const teams = getAllTeams(feed.teams)
   const match = matches.find(item => item.id === matchId)
 
   if (!match) return null
@@ -198,11 +204,12 @@ export function getMatchDataset(matchId: string) {
     teams,
     homeTeam,
     awayTeam,
+    fixtureSource: feed.source,
   }
 }
 
 export async function getMatchViewModel(matchId: string, lang: Lang): Promise<MatchViewModel | null> {
-  const dataset = getMatchDataset(matchId)
+  const dataset = await getMatchDataset(matchId)
   if (!dataset) return null
 
   const { match, homeTeam, awayTeam } = dataset

@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import { isValidLang, DEFAULT_LANG } from '@/lib/i18n'
-import { getMatchViewModel, getStaticMatchParams } from '@/lib/match-view-model'
+import { getMatchViewModel } from '@/lib/match-view-model'
 import Header from '@/components/Header'
 import MatchNavigation from '@/components/MatchNavigation'
 import MatchHeader from '@/components/MatchHeader'
@@ -13,10 +13,7 @@ import ConclusionCard from '@/components/ConclusionCard'
 
 type Params = { lang: string; id: string }
 
-export async function generateStaticParams() {
-  const langs = ['de', 'en', 'pt']
-  return langs.flatMap(lang => getStaticMatchParams().map(id => ({ lang, id })))
-}
+export const dynamic = 'force-dynamic'
 
 export default async function MatchPage({ params }: { params: Params }) {
   const lang = isValidLang(params.lang) ? params.lang : DEFAULT_LANG
@@ -33,6 +30,7 @@ export default async function MatchPage({ params }: { params: Params }) {
     factors,
     reasoning,
     news,
+    fixtureSource,
   } = viewModel
 
   return (
@@ -47,6 +45,7 @@ export default async function MatchPage({ params }: { params: Params }) {
             teams={teams}
             activeId={params.id}
             lang={lang}
+            fixtureSource={fixtureSource}
           />
         </aside>
 

@@ -9,7 +9,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
   const langParam = url.searchParams.get('lang') ?? DEFAULT_LANG
   const lang = isValidLang(langParam) ? langParam : DEFAULT_LANG
 
-  const dataset = getMatchDataset(params.id)
+  const dataset = await getMatchDataset(params.id)
   if (!dataset) return NextResponse.json({ error: 'Match not found' }, { status: 404 })
 
   const { match, homeTeam, awayTeam } = dataset
@@ -26,5 +26,5 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
     lang,
   })
 
-  return NextResponse.json({ reasoning: text })
+  return NextResponse.json({ reasoning: text, fixtureSource: dataset.fixtureSource })
 }

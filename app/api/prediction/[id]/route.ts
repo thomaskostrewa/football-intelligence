@@ -3,7 +3,7 @@ import { getMatchDataset } from '@/lib/match-view-model'
 import { computePrediction, computeFactors } from '@/lib/prediction'
 
 export async function GET(_req: Request, { params }: { params: { id: string } }) {
-  const dataset = getMatchDataset(params.id)
+  const dataset = await getMatchDataset(params.id)
   if (!dataset) {
     return NextResponse.json({ error: 'Match not found' }, { status: 404 })
   }
@@ -48,5 +48,6 @@ export async function GET(_req: Request, { params }: { params: { id: string } })
       lambdaAway: prediction.lambdaAway,
     },
     factors,
+    fixtureSource: dataset.fixtureSource,
   })
 }
