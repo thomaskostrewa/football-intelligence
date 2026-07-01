@@ -39,7 +39,7 @@ export default async function MatchPage({ params }: { params: Params }) {
 
       <div className="flex flex-col lg:flex-row min-h-[calc(100vh-56px)]">
         {/* Sidebar */}
-        <aside className="w-full lg:w-52 xl:w-60 flex-shrink-0 border-b lg:border-b-0 lg:border-r border-border bg-card">
+        <aside className="w-full lg:w-52 xl:w-60 flex-shrink-0 lg:border-r border-border lg:bg-card">
           <MatchNavigation
             matches={matches}
             teams={teams}
