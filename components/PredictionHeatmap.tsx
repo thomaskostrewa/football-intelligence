@@ -47,7 +47,7 @@ export default function PredictionHeatmap({ exactScores, restProbability = 0, ho
         <h2 className="text-sm font-semibold text-text-primary">{tr.probability_heatmap}</h2>
         <div className="relative group">
           <span className="w-4 h-4 rounded-full border border-border text-[10px] flex items-center justify-center text-text-muted cursor-help select-none">i</span>
-          <div className="absolute left-6 top-0 w-52 bg-text-primary text-card text-xs rounded-lg p-3 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20 shadow-lg">
+          <div className="absolute right-0 top-6 w-48 bg-text-primary text-card text-xs rounded-lg p-3 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20 shadow-lg sm:left-6 sm:right-auto sm:top-0 sm:w-52">
             Exact-Score-Modell auf Basis gewichteter Lambdas. Matrix 0:0 bis 5:5, 6+ als Restwahrscheinlichkeit.
           </div>
         </div>
