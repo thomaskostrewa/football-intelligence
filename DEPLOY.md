@@ -18,8 +18,18 @@ cp .env.example .env.local
 
 # 3. Dev-Server starten
 npm run dev
-# → http://localhost:3000 → automatisch zu /de/match/ger-mex
+# → http://localhost:3000 → automatisch zum ersten aufgeloesten Match
 ```
+
+## Delivery Workflow
+
+Vor jedem Review- oder Production-Release gilt der verbindliche Ablauf in [`WORKFLOW.md`](./WORKFLOW.md).
+Kurzfassung:
+
+- Preview erst als `Review` markieren, wenn Vercel `READY` ist und der Preview-Link geprueft wurde.
+- Production erst als `Done` markieren, wenn `main` deployt, Vercel `READY` ist und die Production-URL geprueft wurde.
+- Fallback-, Seed- oder Mock-Daten duerfen nie als echte Live-Daten kommuniziert werden.
+- Fuer Daten-Stories muss `/api/matches` die Source-Metadaten sichtbar ausgeben.
 
 ## Deploy auf Vercel
 
@@ -35,6 +45,8 @@ vercel --prod
 3. Framework: **Next.js** (automatisch erkannt)
 4. Environment Variables hinzufügen:
    - `ANTHROPIC_API_KEY` → dein Key
+   - `SPORTMONKS_API_TOKEN` → erforderlich fuer echte Fixture-Daten
+   - `SPORTMONKS_WORLD_CUP_SEASON_ID` → erforderlich fuer echte WM-Fixtures
 5. Deploy klicken
 
 ### Option C – Subdomain verbinden
@@ -42,15 +54,17 @@ Im Vercel Dashboard → Project → Domains → `football.thomas-kostrewa.de` hi
 DNS: CNAME `football` → `cname.vercel-dns.com`
 
 ## Spieldaten aktualisieren
-- Neue Matches: `data/matches.json` ergänzen
-- Teamdaten (xG, Form) nach jedem Spieltag: `data/teams.json` aktualisieren
-- Nach Update: `vercel --prod` oder Git-Push (Auto-Deploy)
+- Primaere Quelle: SportMonks Fixture Provider ueber `lib/fixtures/provider.ts`
+- Fallback fuer Review ohne Provider-Credentials: `data/remaining-matches.json`
+- Teamdaten fuer Prediction-Kontext: `data/teams.json`
+- Nach Update: Git-Push auf Branch fuer Preview oder Merge nach `main` fuer Production
+- Wichtig: `source=seed-fallback` bedeutet nicht echte Live-Daten.
 
 ## Struktur
 ```
 football-intelligence/
-├── data/          ← Spielplan + Teamdaten (manuell pflegen)
-├── lib/           ← Prediction Engine, News, Reasoning, i18n
+├── data/          ← Fallback-Fixtures + Teamdaten
+├── lib/           ← Provider, Prediction Engine, News, Reasoning, i18n
 ├── app/
 │   ├── [lang]/match/[id]/page.tsx  ← Hauptseite
 │   └── api/                         ← REST Endpoints
@@ -59,4 +73,4 @@ football-intelligence/
 
 ## Ohne API Key
 Ohne `ANTHROPIC_API_KEY` greift ein deterministischer Fallback-Text für das Reasoning-Panel.
-Alle anderen Features (Heatmap, Prediction, News) funktionieren vollständig ohne Key.
+Ohne `SPORTMONKS_API_TOKEN` und `SPORTMONKS_WORLD_CUP_SEASON_ID` greift die Fixture-Liste sichtbar auf `seed-fallback`.
