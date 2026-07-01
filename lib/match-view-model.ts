@@ -4,6 +4,7 @@ import { computeFactors, computePrediction } from '@/lib/prediction'
 import { generateReasoning } from '@/lib/reasoning'
 import { fetchNews } from '@/lib/news'
 import type { Lang } from '@/lib/i18n'
+import { buildMatchIntelligence, type MatchIntelligenceResponse } from '@/lib/model/matchIntelligence'
 
 export type LocalizedText = { de: string; en: string; pt: string }
 
@@ -43,6 +44,7 @@ export type MatchViewModel = {
   homeTeam: TeamData
   awayTeam: TeamData
   prediction: ReturnType<typeof computePrediction>
+  intelligence: MatchIntelligenceResponse
   factors: ReturnType<typeof computeFactors>
   reasoning: string
   news: Awaited<ReturnType<typeof fetchNews>>
@@ -213,7 +215,27 @@ export async function getMatchViewModel(matchId: string, lang: Lang): Promise<Ma
   if (!dataset) return null
 
   const { match, homeTeam, awayTeam } = dataset
-  const prediction = computePrediction(homeTeam.xgAvg, awayTeam.xgAvg)
+  const intelligence = await buildMatchIntelligence({ match, homeTeam, awayTeam })
+  const prediction = {
+    ...computePrediction(intelligence.lambdaHome, intelligence.lambdaAway),
+    matrix: intelligence.exactScores.reduce((matrix, score) => {
+      matrix[score.homeGoals] = matrix[score.homeGoals] ?? []
+      matrix[score.homeGoals][score.awayGoals] = score.probability
+      return matrix
+    }, [] as number[][]),
+    topResults: intelligence.topScores.map(score => ({
+      home: score.homeGoals,
+      away: score.awayGoals,
+      probability: score.probability,
+    })),
+    mostLikelyResult: {
+      home: intelligence.topScores[0].homeGoals,
+      away: intelligence.topScores[0].awayGoals,
+      probability: intelligence.topScores[0].probability,
+    },
+    lambdaHome: intelligence.lambdaHome,
+    lambdaAway: intelligence.lambdaAway,
+  }
   const factors = computeFactors(homeTeam, awayTeam, prediction, match.weather)
 
   const [reasoningResult, newsResult] = await Promise.allSettled([
@@ -253,6 +275,7 @@ export async function getMatchViewModel(matchId: string, lang: Lang): Promise<Ma
   return {
     ...dataset,
     prediction,
+    intelligence,
     factors,
     reasoning: reasoningResult.status === 'fulfilled' ? reasoningResult.value : '',
     news: newsResult.status === 'fulfilled' ? newsResult.value : [],

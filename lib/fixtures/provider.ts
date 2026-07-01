@@ -1,4 +1,5 @@
 import seedMatches from '@/data/remaining-matches.json'
+import { getWorldCupFixtures, type ApiFootballMatchData } from '@/lib/data-sources/apiFootball'
 import type { MatchData, TeamData } from '@/lib/match-view-model'
 
 type SportMonksParticipant = {
@@ -26,7 +27,7 @@ type SportMonksResponse = {
   data?: SportMonksFixture[]
 }
 
-export type FixtureSourceKind = 'sportmonks' | 'seed-fallback'
+export type FixtureSourceKind = 'sportmonks' | 'api-football-mapped' | 'seed-fallback'
 
 export type FixtureSource = {
   kind: FixtureSourceKind
@@ -65,6 +66,79 @@ function slugify(value: string) {
     .replace(/[\u0300-\u036f]/g, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)/g, '')
+}
+
+function normalizeName(value: string) {
+  return value
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/&/g, 'and')
+    .replace(/[^a-z0-9]+/g, '')
+}
+
+function teamAliases(team: TeamData) {
+  return [team.code, team.name.en, team.name.de, team.name.pt, ...team.newsKeywords]
+    .filter(Boolean)
+    .map(value => normalizeName(value))
+}
+
+function teamMatchesApiName(team: TeamData, apiName?: string) {
+  if (!apiName) return false
+  const normalizedApiName = normalizeName(apiName)
+  return teamAliases(team).some(alias => alias === normalizedApiName || normalizedApiName.includes(alias) || alias.includes(normalizedApiName))
+}
+
+function datesAreClose(localDate: string, apiDate?: string) {
+  if (!apiDate) return false
+  const deltaMs = Math.abs(new Date(localDate).getTime() - new Date(apiDate).getTime())
+  return deltaMs <= 48 * 60 * 60 * 1000
+}
+
+function findApiFootballFixture(
+  match: MatchData,
+  teams: Record<string, TeamData>,
+  fixtures: ApiFootballMatchData[]
+) {
+  const homeTeam = teams[match.homeTeam]
+  const awayTeam = teams[match.awayTeam]
+  if (!homeTeam || !awayTeam) return undefined
+
+  return fixtures.find(fixture => {
+    const directOrder =
+      teamMatchesApiName(homeTeam, fixture.homeTeam) &&
+      teamMatchesApiName(awayTeam, fixture.awayTeam)
+    const swappedOrder =
+      teamMatchesApiName(homeTeam, fixture.awayTeam) &&
+      teamMatchesApiName(awayTeam, fixture.homeTeam)
+
+    return (directOrder || swappedOrder) && datesAreClose(match.date, fixture.kickoff)
+  })
+}
+
+function withApiFootballFixtureIds(
+  matches: MatchData[],
+  teams: Record<string, TeamData>,
+  fixtures: ApiFootballMatchData[]
+) {
+  let mappedCount = 0
+
+  const mappedMatches = matches.map(match => {
+    const fixture = findApiFootballFixture(match, teams, fixtures)
+    if (!fixture?.fixtureId) return match
+
+    mappedCount += 1
+
+    return {
+      ...match,
+      provider: 'api-football',
+      providerId: fixture.fixtureId,
+      date: fixture.kickoff ?? match.date,
+      venue: fixture.venue ? localized(fixture.venue) : match.venue,
+    } satisfies MatchData
+  })
+
+  return { mappedMatches, mappedCount }
 }
 
 function resolveParticipant(
@@ -191,5 +265,41 @@ export async function getFixtureFeed(teams: Record<string, TeamData>): Promise<F
     console.error(error)
   }
 
-  return getSeedFixtureFeed()
+  const seedFeed = getSeedFixtureFeed()
+
+  try {
+    const apiFootballFixtures = await getWorldCupFixtures(2026)
+    if (apiFootballFixtures.length) {
+      const { mappedMatches, mappedCount } = withApiFootballFixtureIds(seedFeed.matches, teams, apiFootballFixtures)
+
+      return {
+        matches: mappedMatches,
+        teams: seedFeed.teams,
+        source: {
+          kind: mappedCount > 0 ? 'api-football-mapped' : 'seed-fallback',
+          name: mappedCount > 0 ? 'API-Football fixture mapping' : seedFeed.source.name,
+          isLive: mappedCount > 0,
+          configured: true,
+          generatedAt: new Date().toISOString(),
+          note:
+            mappedCount > 0
+              ? `${mappedCount} local fixtures matched to API-Football fixture IDs.`
+              : 'API-Football is configured, but no local fixtures could be matched yet.',
+        },
+      }
+    }
+  } catch (error) {
+    console.error('API-Football fixture mapping failed', error)
+  }
+
+  return {
+    ...seedFeed,
+    source: {
+      ...seedFeed.source,
+      configured: Boolean(process.env.API_FOOTBALL_KEY),
+      note: process.env.API_FOOTBALL_KEY
+        ? 'API-Football is configured, but no 2026 fixtures are available to this plan yet. Using local fallback fixtures.'
+        : seedFeed.source.note,
+    },
+  }
 }

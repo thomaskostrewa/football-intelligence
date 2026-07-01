@@ -1,9 +1,9 @@
 import type { Lang } from '@/lib/i18n'
 import { t } from '@/lib/i18n'
-import type { ScoreProbability } from '@/lib/prediction'
+import type { ExactScoreProbability } from '@/lib/model/calculateExactScoreMatrix'
 
 interface Props {
-  topResults: ScoreProbability[]
+  topResults: ExactScoreProbability[]
   lang: Lang
 }
 
@@ -31,7 +31,7 @@ export default function TopResults({ topResults, lang }: Props) {
             >
               <span className="text-[10px] font-semibold text-text-muted">#{i + 1}</span>
               <span className={`text-base font-bold ${isFirst ? 'text-positive' : 'text-text-primary'}`}>
-                {score.home}:{score.away}
+                {score.homeGoals}:{score.awayGoals}
               </span>
               <div className="w-full bg-border rounded-full h-1">
                 <div

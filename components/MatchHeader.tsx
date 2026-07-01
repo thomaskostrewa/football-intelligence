@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import type { Lang } from '@/lib/i18n'
 import { t } from '@/lib/i18n'
+import { TimezoneToggle, useTimezone, type TimezoneId } from './TimezonePreference'
 
 interface Team {
   name: { de: string; en: string; pt: string }
@@ -44,8 +45,27 @@ function useCountdown(targetDate: string) {
   return { d, h, m, s }
 }
 
+function formatMatchDate(date: Date, lang: Lang, timezone: TimezoneId) {
+  return new Intl.DateTimeFormat(lang === 'de' ? 'de-DE' : lang === 'pt' ? 'pt-PT' : 'en-GB', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    timeZone: timezone,
+  }).format(date)
+}
+
+function formatMatchTime(date: Date, lang: Lang, timezone: TimezoneId) {
+  return new Intl.DateTimeFormat(lang === 'de' ? 'de-DE' : lang === 'pt' ? 'pt-PT' : 'en-GB', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23',
+    timeZone: timezone,
+  }).format(date)
+}
+
 export default function MatchHeader({ match, homeTeam, awayTeam, lang }: Props) {
   const tr = t[lang]
+  const { timezone, timezoneLabel } = useTimezone()
   const countdown = useCountdown(match.date)
   const matchDate = new Date(match.date)
 
@@ -90,11 +110,10 @@ export default function MatchHeader({ match, homeTeam, awayTeam, lang }: Props) 
             <circle cx="7" cy="7" r="5.5" stroke="currentColor" strokeWidth="1.2"/>
             <path d="M7 4v3.5l2.5 1.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
           </svg>
-          {matchDate.toLocaleDateString(lang === 'de' ? 'de-DE' : lang === 'pt' ? 'pt-PT' : 'en-GB', {
-            day: '2-digit', month: '2-digit', year: 'numeric'
-          })}
+          {formatMatchDate(matchDate, lang, timezone)}
           {' '}
-          {matchDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          {formatMatchTime(matchDate, lang, timezone)}
+          <span className="text-[11px] text-text-muted">({timezoneLabel})</span>
         </span>
 
         {countdown && (
@@ -104,6 +123,10 @@ export default function MatchHeader({ match, homeTeam, awayTeam, lang }: Props) 
             {pad(countdown.h)}{tr.hours} {pad(countdown.m)}{tr.minutes} {pad(countdown.s)}{tr.seconds}
           </span>
         )}
+      </div>
+
+      <div className="mt-5 flex justify-center">
+        <TimezoneToggle />
       </div>
     </div>
   )

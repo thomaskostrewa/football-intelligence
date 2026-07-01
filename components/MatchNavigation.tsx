@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import type { Lang } from '@/lib/i18n'
 import type { FixtureSource } from '@/lib/fixtures/provider'
+import { useTimezone, type TimezoneId } from './TimezonePreference'
 
 interface Team {
   id: string; name: { de: string; en: string; pt: string }; flag: string
@@ -26,6 +27,22 @@ interface Props {
 }
 
 const localeFor = (lang: Lang) => lang === 'de' ? 'de-DE' : lang === 'pt' ? 'pt-PT' : 'en-GB'
+
+function formatDate(date: Date, lang: Lang, timezone: TimezoneId, options: Intl.DateTimeFormatOptions) {
+  return new Intl.DateTimeFormat(localeFor(lang), {
+    ...options,
+    timeZone: timezone,
+  }).format(date)
+}
+
+function formatTime(date: Date, lang: Lang, timezone: TimezoneId) {
+  return new Intl.DateTimeFormat(localeFor(lang), {
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23',
+    timeZone: timezone,
+  }).format(date)
+}
 
 function labelsFor(lang: Lang) {
   if (lang === 'de') {
@@ -64,6 +81,7 @@ export default function MatchNavigation({ matches, teams, activeId, lang, fixtur
   const visible = matches
   const [isOpen, setIsOpen] = useState(false)
   const [showPending, setShowPending] = useState(false)
+  const { timezone, timezoneLabel } = useTimezone()
   const labels = labelsFor(lang)
   const sourceLabel = fixtureSource.isLive
     ? fixtureSource.name
@@ -100,7 +118,7 @@ export default function MatchNavigation({ matches, teams, activeId, lang, fixtur
       } else {
         groups.push({
           key,
-          label: matchDate.toLocaleDateString(localeFor(lang), {
+          label: formatDate(matchDate, lang, timezone, {
             weekday: 'short',
             day: '2-digit',
             month: '2-digit',
@@ -111,14 +129,14 @@ export default function MatchNavigation({ matches, teams, activeId, lang, fixtur
 
       return groups
     }, [])
-  }, [resolvedMatches, lang])
+  }, [resolvedMatches, lang, timezone])
 
   function matchTime(match: Match) {
-    return new Date(match.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    return formatTime(new Date(match.date), lang, timezone)
   }
 
   function matchDateLabel(match: Match) {
-    return new Date(match.date).toLocaleDateString(localeFor(lang), {
+    return formatDate(new Date(match.date), lang, timezone, {
       day: '2-digit',
       month: '2-digit',
     })
@@ -236,7 +254,7 @@ export default function MatchNavigation({ matches, teams, activeId, lang, fixtur
             </p>
             {activeDate && (
               <p className="mt-0.5 text-[11px] text-text-muted">
-                {matchDateLabel(activeMatch)} · {matchTime(activeMatch)}
+                {matchDateLabel(activeMatch)} · {matchTime(activeMatch)} · {timezoneLabel}
               </p>
             )}
           </div>

@@ -2,6 +2,8 @@ import { redirect } from 'next/navigation'
 import { getBaseTeams, getAllTeams, isResolvedMatch } from '@/lib/match-view-model'
 import { getFixtureFeed } from '@/lib/fixtures/provider'
 
+export const dynamic = 'force-dynamic'
+
 export default async function RootPage() {
   const baseTeams = getBaseTeams()
   const feed = await getFixtureFeed(baseTeams)

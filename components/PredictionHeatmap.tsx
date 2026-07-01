@@ -1,5 +1,6 @@
 import type { Lang } from '@/lib/i18n'
 import { t } from '@/lib/i18n'
+import type { ExactScoreProbability } from '@/lib/model/calculateExactScoreMatrix'
 
 interface Team {
   name: { de: string; en: string; pt: string }
@@ -7,7 +8,8 @@ interface Team {
 }
 
 interface Props {
-  matrix: number[][]
+  exactScores: ExactScoreProbability[]
+  restProbability?: number
   homeTeam: Team
   awayTeam: Team
   lang: Lang
@@ -26,9 +28,14 @@ function textColor(prob: number, maxProb: number): string {
   return prob / maxProb > 0.5 ? '#FFFFFF' : '#1B1B1B'
 }
 
-export default function PredictionHeatmap({ matrix, homeTeam, awayTeam, lang }: Props) {
+export default function PredictionHeatmap({ exactScores, restProbability = 0, homeTeam, awayTeam, lang }: Props) {
   const tr = t[lang]
-  const GOALS = [0, 1, 2, 3, 4]
+  const GOALS = [0, 1, 2, 3, 4, 5]
+  const matrix = exactScores.reduce((acc, score) => {
+    acc[score.homeGoals] = acc[score.homeGoals] ?? []
+    acc[score.homeGoals][score.awayGoals] = score.probability
+    return acc
+  }, [] as number[][])
 
   // Find max probability for color scaling
   let maxProb = 0
@@ -41,7 +48,7 @@ export default function PredictionHeatmap({ matrix, homeTeam, awayTeam, lang }: 
         <div className="relative group">
           <span className="w-4 h-4 rounded-full border border-border text-[10px] flex items-center justify-center text-text-muted cursor-help select-none">i</span>
           <div className="absolute left-6 top-0 w-52 bg-text-primary text-card text-xs rounded-lg p-3 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20 shadow-lg">
-            Poisson-Modell auf Basis historischer xG-Durchschnittswerte. Normalisiert auf 0–4 Tore pro Team.
+            Exact-Score-Modell auf Basis gewichteter Lambdas. Matrix 0:0 bis 5:5, 6+ als Restwahrscheinlichkeit.
           </div>
         </div>
       </div>
@@ -127,6 +134,9 @@ export default function PredictionHeatmap({ matrix, homeTeam, awayTeam, lang }: 
               />
             </span>
           </div>
+          <p className="mt-3 text-[11px] text-text-muted">
+            Restwahrscheinlichkeit fuer 6+ Tore in mindestens einer Richtung: {(restProbability * 100).toFixed(1)}%
+          </p>
         </div>
       </div>
     </div>

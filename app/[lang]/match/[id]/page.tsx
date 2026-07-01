@@ -10,6 +10,9 @@ import ExplainabilityPanel from '@/components/ExplainabilityPanel'
 import NewsFeed from '@/components/NewsFeed'
 import TopResults from '@/components/TopResults'
 import ConclusionCard from '@/components/ConclusionCard'
+import SourceTransparencyPanel from '@/components/SourceTransparencyPanel'
+import RecommendationCards from '@/components/RecommendationCards'
+import { TimezoneProvider } from '@/components/TimezonePreference'
 
 type Params = { lang: string; id: string }
 
@@ -27,6 +30,7 @@ export default async function MatchPage({ params }: { params: Params }) {
     homeTeam,
     awayTeam,
     prediction,
+    intelligence,
     factors,
     reasoning,
     news,
@@ -37,6 +41,7 @@ export default async function MatchPage({ params }: { params: Params }) {
     <div className="min-h-screen bg-background">
       <Header lang={lang} matchId={params.id} />
 
+      <TimezoneProvider>
       <div className="flex flex-col lg:flex-row min-h-[calc(100vh-56px)]">
         {/* Sidebar */}
         <aside className="w-full lg:w-52 xl:w-60 flex-shrink-0 lg:border-r border-border lg:bg-card">
@@ -59,12 +64,14 @@ export default async function MatchPage({ params }: { params: Params }) {
               {/* Heatmap + Top10 + Conclusion (2/3 width) */}
               <div className="xl:col-span-2 space-y-6">
                 <PredictionHeatmap
-                  matrix={prediction.matrix}
+                  exactScores={intelligence.exactScores}
+                  restProbability={intelligence.restProbability}
                   homeTeam={homeTeam}
                   awayTeam={awayTeam}
                   lang={lang}
                 />
-                <TopResults topResults={prediction.topResults} lang={lang} />
+                <TopResults topResults={intelligence.topScores} lang={lang} />
+                <RecommendationCards intelligence={intelligence} />
                 <ConclusionCard
                   result={prediction.mostLikelyResult}
                   reasoning={reasoning}
@@ -74,6 +81,7 @@ export default async function MatchPage({ params }: { params: Params }) {
 
               {/* Explainability + News (1/3 width) */}
               <div className="space-y-6">
+                <SourceTransparencyPanel intelligence={intelligence} />
                 <ExplainabilityPanel
                   factors={factors}
                   result={prediction.mostLikelyResult}
@@ -87,6 +95,7 @@ export default async function MatchPage({ params }: { params: Params }) {
           </div>
         </main>
       </div>
+      </TimezoneProvider>
     </div>
   )
 }
